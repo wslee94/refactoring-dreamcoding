@@ -11,11 +11,20 @@ export class Person {
   }
 
   get courses() {
-    return this.#courses;
+    return [...this.#courses];
   }
 
-  set courses(courses) {
-    this.#courses = courses;
+  addCourse(course) {
+    this.#courses.push(course);
+  }
+
+  removeCourse(course, runIfAbsent) {
+    const index = this.#courses.indexOf(course);
+    if (index === -1) {
+      runIfAbsent();
+      return;
+    }
+    this.#courses.splice(index, 1);
   }
 }
 
@@ -36,6 +45,15 @@ export class Course {
   }
 }
 
-const ellie = new Person('엘리');
-ellie.courses.push(new Course('리팩토링', true));
+const ellie = new Person("엘리");
+// 외부에서 배열(컬렉션) 조작을 마음대로 할 수 있음 (치명적인 냄새)
+const course = new Course("리팩토링", true);
+ellie.addCourse(course);
 console.log(ellie.courses.length);
+ellie.removeCourse(course, () => {
+  console.log("해당 코스는 존재하지 않습니다.");
+});
+console.log(ellie.courses.length);
+ellie.removeCourse(course, () => {
+  console.log("해당 코스는 존재하지 않습니다.");
+});
