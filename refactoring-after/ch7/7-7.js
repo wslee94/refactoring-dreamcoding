@@ -10,12 +10,12 @@ class Person {
     return this.#name;
   }
 
-  get department() {
-    return this.#department;
+  get manager() {
+    return this.#department.manager;
   }
 
-  set department(arg) {
-    this.#department = arg;
+  get chargeCode() {
+    return this.#department.chargeCode;
   }
 }
 
@@ -44,7 +44,11 @@ export class Department {
   }
 }
 
-const person = new Person('Tom', new Department('aManager', '999'));
+const person = new Person("Tom", new Department("aManager", "999"));
 console.log(person.name);
-console.log(person.department.manager);
-console.log(person.department.chargeCode);
+/* 
+  department를 외부에서 사용할 수 있도록 함. 
+  내부적으로 사용해야할 데이터를 지나치게 노출한 케이스
+*/
+console.log(person.manager);
+console.log(person.chargeCode);
