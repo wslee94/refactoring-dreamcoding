@@ -1,17 +1,21 @@
 class Account {
-  constructor(number, type, interestRate) {
+  constructor(number, type) {
     this._number = number;
     this._type = type;
-    this._interestRate = interestRate;
   }
 
+  /* 위임 숨기기 사용 */
   get interestRate() {
-    return this._interestRate;
+    return this._type.interestRate;
   }
 }
 
 class AccountType {
-  constructor(nameString) {
+  constructor(nameString, interestRate) {
     this._name = nameString;
+    this._interestRate = interestRate;
+  }
+  get interestRate() {
+    return this._interestRate;
   }
 }
