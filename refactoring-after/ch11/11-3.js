@@ -1,19 +1,22 @@
 // 예제 1
-function setDimension(name, value) {
-  if (name === 'height') {
-    this._height = value;
-    return;
-  }
-  if (name === 'width') {
-    this._width = value;
-    return;
-  }
+function setWidth(value) {
+  this._width = value;
+}
+
+function setHight(value) {
+  this._height = value;
 }
 
 // 예제 2
 class Concert {
-  book(customer, isPremium) {}
+  regularBook(customer) {}
+  premiumBook(customer) {}
+  // 만약 공통 로직을 꼭 사용해야하는 경우라면, 아래처럼 코드를 작성해도 무방하다.
+  regularBook(customer) { this.#book(customer, false) }
+  premiumBook(customer) { this.#book(customer, true) }
+  #book(customer, isPremium) {}
 }
 
 // 예제 3
-function setSwitch(on);
+function switchOn();
+function switchOff();
