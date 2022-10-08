@@ -9,30 +9,49 @@
   꿀팁
   1. 지역변수는 사용하는 곳과 가까운곳에 선언하는 것이 좋다. (outstanding)
 */
-export function printOwing(invoice, console, clock) {
-  let outstanding = 0;
 
-  console.log("***********************");
-  console.log("**** Customer Owes ****");
-  console.log("***********************");
+class Owing {
+  #invoice;
+  #console;
+  #clock;
 
-  // calculate outstanding
-  for (const o of invoice.orders) {
-    outstanding += o.amount;
+  constructor(invoice, console, clock) {
+    this.#invoice = invoice;
+    this.#console = console;
+    this.#clock = clock;
   }
 
-  // record due date
-  const today = clock.today;
-  invoice.dueDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + 30
-  );
+  get outstanding() {
+    return this.#invoice.orders.reduce((acc, o) => (acc += o.amount), 0);
+  }
 
-  //print details
-  console.log(`name: ${invoice.customer}`);
-  console.log(`amount: ${outstanding}`);
-  console.log(`due: ${invoice.dueDate.toLocaleDateString()}`);
+  printBanner() {
+    this.#console.log("***********************");
+    this.#console.log("**** Customer Owes ****");
+    this.#console.log("***********************");
+  }
+
+  recordDueDate() {
+    const today = this.#clock.today;
+    this.#invoice.dueDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 30
+    );
+  }
+
+  printDetail() {
+    this.#console.log(`name: ${this.#invoice.customer}`);
+    this.#console.log(`amount: ${this.outstanding}`);
+    this.#console.log(`due: ${this.#invoice.dueDate.toLocaleDateString()}`);
+  }
+}
+
+export function printOwing(invoice, console, clock) {
+  const owing = new Owing(invoice, console, clock);
+  owing.printBanner();
+  owing.recordDueDate();
+  owing.printDetail();
 }
 
 const invoice = {
